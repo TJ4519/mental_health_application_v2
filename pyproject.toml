@@ -1,0 +1,25 @@
+ [tool.poetry]
+    name = "mental_health_agent"
+    version = "0.1.0"
+    description = "Mental Health Agent using SoTA LLMs"
+    authors = ["Tejasbir Singh <tejasbirsingh@gmail.com>"]
+
+[tool.poetry.group.dev.dependencies]
+devtools = "^0.12.2"
+jupyter = "^1.1.1"
+
+    [build-system]
+    requires = ["poetry-core>=1.0.0"]
+    build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+pandas = "^2.2.3"
+openai = "^1.55.3"
+huggingface = "^0.0.1"
+python-dotenv = "^1.0.1"
+datasets = "^3.1.0"
+loguru = "^0.7.2"
+transformers = "^4.46.3"
+django = "^5.1.3"
+

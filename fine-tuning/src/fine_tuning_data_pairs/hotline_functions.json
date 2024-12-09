@@ -1,0 +1,53 @@
+
+{
+  "name": "store_hotlines",
+  "description": "Generates a function that stores a database of numbers and hotlines for various services",
+  "strict": true,
+  "parameters": {
+    "type": "object",
+    "required": [
+      "hotlines",
+      "update_method"
+    ],
+    "properties": {
+      "hotlines": {
+        "type": "array",
+        "description": "List of hotline objects to store",
+        "items": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string",
+              "description": "Name of the hotline service"
+            },
+            "number": {
+              "type": "string",
+              "description": "Contact number for the hotline service"
+            },
+            "category": {
+              "type": "string",
+              "description": "Category of the hotline service (e.g. 'suicide', 'police', 'counselling')",
+              "enum": [
+                "suicide",
+                "police",
+                "marriage_counselling",
+                "physiotherapist"
+              ]
+            }
+          },
+          "required": [
+            "name",
+            "number",
+            "category"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "update_method": {
+        "type": "string",
+        "description": "Method to update the hotline entries in the database"
+      }
+    },
+    "additionalProperties": false
+  }
+}
