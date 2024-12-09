@@ -15,12 +15,16 @@ The agent is integrated into a Django web application, which provides a user int
 
 **Technical Details**
 
-The application is built using Django 5.1.3, with a PostgreSQL database for storing user interactions and agent responses. The OpenAI API is used for natural language processing and generating responses. The application is designed to be scalable and secure, with proper error handling and logging mechanisms in place.
+The application is built using Django 5.1.3, with a PostgreSQL database for storing user interactions and agent responses. The OpenAI API is used for natural language processing and generating responses. The model was fine-tuned on a random selection of 150 context-response samples, with an epoch of three over the training run, achieving a training loss of 0.43. The application is designed to be scalable and secure, with proper error handling and logging mechanisms in place.
 
-**Future Development**
+**Future Development and improvements**
 
-Fine-tuning on a larger dataset sample would improve performance over the base LLM. Having trained on ~300,000 tokens out the possible 5miilion
+A few thing to consider:
 
-**Contributing**
+- For validation and training loss improvements, one would be to simply expand the sample of context:responses out of the 3512 rows to be used for fine-tuning, and adjusting learning-rates + epochs. 
 
-Contributions to this project are welcome. If you're interested in contributing, please review the project's code and documentation, and submit a pull request with your proposed changes.
+- Defining so called functions in the chat_response function within view.py via 'tools' that dynamically suggest hotlines from an object store that can be defined on the back-end with the specific hotlines and specialties. The tools can be suggested by the OpenAI api to allow the models to use their own semantic reasoning and use data that can be defined in an object
+
+- Actual UI view. A standalone application interface would obviously be needed to make user exp. better.
+
+
