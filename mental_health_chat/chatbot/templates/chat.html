@@ -1,16 +1,18 @@
 {% extends 'base.html' %}
 
-{% block title %}Chatbot Interface{% endblock %}
+{% block title %}Eliza{% endblock %}
 
 {% block content %}
-<h1 style="text-align: center;">Chatbot</h1>
-
+<h1 style="text-align: center; color: #4caf50;">Eliza</h1>
 
 <div id="chatArea" style="border: 1px solid #ccc; border-radius: 10px; padding: 15px; height: 400px; overflow-y: auto; background-color: #f5f5f5; margin-bottom: 10px;"></div>
 
+<div class="loading" id="loadingIndicator" style="display: none; text-align: center;">
+    <div class="loader"></div> Generating response...
+</div>
 
 <form id="chatForm" style="display: flex;">
-    <input type="text" id="userInput" placeholder="Type your message here..." aria-label="Type your message here" style="flex: 1; padding: 10px; border-radius: 20px; border: 1px solid #ccc; font-size: 16px; outline: none;">
+    <textarea id="userInput" placeholder="How can I help you today as a mental health assistant?" aria-label="Type your message here" style="flex: 1; padding: 10px; border-radius: 20px; border: 1px solid #ccc; font-size: 16px; outline: none; width: 50%; resize: vertical; min-height: 40px;"></textarea>
     <button type="submit" style="padding: 10px 20px; margin-left: 10px; border: none; border-radius: 20px; background-color: #007bff; color: white; font-size: 16px; cursor: pointer;">Send</button>
 </form>
 
@@ -21,11 +23,9 @@
             $('#chatArea').scrollTop($('#chatArea')[0].scrollHeight);
         }
 
-
         function appendMessage(sender, message, isUser) {
             const chatBubble = $('<div>').addClass('chat-bubble').text(message);
             const chatWrapper = $('<div>').addClass('chat-message').append(chatBubble);
-
 
             if (isUser) {
                 chatWrapper.css({'text-align': 'right'});
@@ -41,22 +41,18 @@
         $('#chatForm').on('submit', function(event){
             event.preventDefault();
 
-
             var userInput = $('#userInput').val().trim();
-
 
             if (!userInput) {
                 alert('Please enter a message.');
                 return;
             }
 
-
             appendMessage('You', userInput, true);
-
 
             $('#userInput').prop('disabled', true);
             $('button[type="submit"]').prop('disabled', true);
-
+            $('#loadingIndicator').show();
 
             $.ajax({
                 url: '',
@@ -66,7 +62,6 @@
                     'csrfmiddlewaretoken': '{{ csrf_token }}'
                 },
                 success: function(response){
-
                     appendMessage('Bot', response.reply, false);
                     $('#userInput').val(''); 
                     $('#userInput').focus();  
@@ -75,17 +70,19 @@
                     alert('Something went wrong. Please try again.');
                 },
                 complete: function() {
-
                     $('#userInput').prop('disabled', false);
                     $('button[type="submit"]').prop('disabled', false);
+                    $('#loadingIndicator').hide();
                 }
             });
         });
     });
 </script>
 
-
 <style>
+    body {
+        background-color: #f9f9f9; /* Change this to the desired background color */
+    }
     .chat-message {
         margin: 10px 0;
     }
@@ -95,6 +92,20 @@
         max-width: 70%;
         word-wrap: break-word;
         font-size: 16px;
+    }
+    .loader {
+        border: 4px solid #f3f3f3; /* Light grey */
+        border-top: 4px solid #3498db; /* Blue */
+        border-radius: 50%;
+        width: 20px;
+        height: 20px;
+        animation: spin 1s linear infinite;
+        display: inline-block;
+    }
+
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
     }
 </style>
 {% endblock %}
